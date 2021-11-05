@@ -5,18 +5,12 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include "algorythms.h"
 
 template<typename T>
-class List;
-struct ICopyAlghorithm {
-	virtual void copy() = 0;
-	virtual ~ICopyAlghorithm() = default;
-};
-struct CopyUsingVectors : ICopyAlghorithm {
-	virtual void copy() override {
-
-	}
-};
+class ICopyAlghorithm;
+template<typename T>
+class CopyUsingVectors;
 
 template<typename T>
 class List
@@ -24,7 +18,7 @@ class List
 public:
 	List();
 	List(const List& list_);
-	//List& operator=(const List& list_);
+	List& operator=(const List& list_);
 	~List();
 
 	void push_back(T data);
@@ -59,8 +53,10 @@ private:
 	unsigned int Size;
 	std::shared_ptr<Node<T>> head;
 
-	ICopyAlghorithm* copyAlgorythm;
 	void copyList(const List& list_);
+
+	friend class ICopyAlghorithm<T>;
+	friend class CopyUsingVectors<T>;
 };
 
 template<typename T>
@@ -76,11 +72,13 @@ List<T>::List(const List<T>& list_)
 {
 	copyList(list_);
 }
-/*
+
 template<typename T>
-List& List<T>::operator=(const List& list_)
+List<T>& List<T>::operator=(const List<T>& list_)
 {
-}*/
+	copyList(list_);
+	return this;
+}
 
 template<typename T>
 List<T>::~List()
@@ -176,7 +174,7 @@ T& List<T>::operator[](const unsigned int index)
 }
 
 template<typename T>
-void List<T>::copyList(const List& list_)
+void List<T>::copyList(const List<T>& list_)
 {
 	Size = 0;
 	head = nullptr;
@@ -207,5 +205,50 @@ void List<T>::copyList(const List& list_)
 		set_additional_link(i, vec_connections[i]);
 	}
 }
+
+
+template<typename T>
+class ICopyAlghorithm : List<T> {
+public:
+	virtual List<T> copy(const List<T>& list_) = 0;
+	virtual ~ICopyAlghorithm() = default;
+};
+
+template<typename T>
+class CopyUsingVectors : ICopyAlghorithm<T> {
+public:
+	virtual List<T> copy(const List<T>& list_) override {
+		List<T> list;
+
+		std::map<Node<T>*, int> map_pointers;
+		std::vector<int> vec_connections;
+
+		std::shared_ptr<Node<T>> old_list = list_.head;
+
+		int counter = 0;
+		while (old_list != nullptr)
+		{
+			map_pointers[std::shared_ptr<Node<T>>(old_list).get()] = counter++;
+			list.push_back(old_list->data);
+			old_list = old_list->next;
+		}
+
+		old_list = list_.head;
+		while (old_list != nullptr)
+		{
+			vec_connections.push_back(map_pointers[std::shared_ptr<Node<T>>(old_list->p).get()]);
+			old_list = old_list->next;
+		}
+
+		for (unsigned int i = 0; i < Size; i++)
+		{
+			list.set_additional_link(i, vec_connections[i]);
+		}
+
+		
+		return list;
+	}
+};
+
 
 #endif // LINKED_LIST_H

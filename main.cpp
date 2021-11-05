@@ -1,13 +1,11 @@
 
 #include <memory>
-#include <list>
 #include "linked_list.h"
 #include <string>
 
 int main()
 {
 	List<int> lst;
-
 	unsigned int numbersCount = 6;
 	//std::cin >> numbersCount;
 	std::cout << "voila" << std::endl;
@@ -28,9 +26,7 @@ int main()
 		lst[i];
 	}
 
-	std::unique_ptr<ICopyAlghorithm> copyAlgo(new CopyUsingVectors);
 	List<int> lst2(lst);
-
 
 	std::cout << "list2:" << std::endl;
 	for (unsigned int i = 0; i < lst.get_size(); i++)
