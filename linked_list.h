@@ -8,11 +8,6 @@
 #include "algorythms.h"
 
 template<typename T>
-class ICopyAlghorithm;
-template<typename T>
-class CopyUsingVectors;
-
-template<typename T>
 class List
 {
 public:
@@ -27,6 +22,7 @@ public:
 	void set_additional_link(const unsigned int index, const unsigned int second_link_index);
 
 	unsigned int get_size() { return Size; }
+	T get_value() { return head->data; }
 	T& operator[] (const unsigned int index);
 private:
 	template<typename T>
@@ -55,8 +51,6 @@ private:
 
 	void copyList(const List& list_);
 
-	friend class ICopyAlghorithm<T>;
-	friend class CopyUsingVectors<T>;
 };
 
 template<typename T>
@@ -83,7 +77,7 @@ List<T>& List<T>::operator=(const List<T>& list_)
 template<typename T>
 List<T>::~List()
 {
-	clear();
+	Size=0;
 	std::cout << "list destructor" << std::endl;
 }
 template<typename T>

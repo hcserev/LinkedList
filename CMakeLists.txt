@@ -15,11 +15,11 @@ set(headers linked_list.h algorythms.h)
 include_directories("${PROJECT_SOURCE_DIR}/headers"
  "googletest/googletest/include/")
 
-add_executable(${PROJECT_NAME}
+add_library(${PROJECT_NAME} STATIC
                ${sources}
                ${headers})
 
-#add_subdirectory(linked_list_tests)
+add_subdirectory(linked_list_tests)
 
 target_link_libraries(gtest
 )
