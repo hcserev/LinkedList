@@ -4,40 +4,135 @@
 #include <memory>
 #include <iostream>
 
-template <class T>
-class MyList
+template<typename T>
+class List
 {
 public:
-    MyList() : head(new Node) {
-        size = 1;
-        std::cout << "create first empty list" << std::endl;
-    };
-    MyList(T val_) : head(new Node{ val_ }) {
-        size = 1;
-        std::cout << "create first empty list with val argument" << std::endl;
-    };
-    void setHeadVal(T val_)
-    {
-        head->val = val_;
-    }
-    T getHeadVal()
-    {
-        return head->val;
-    }
+	List();
+	~List();
+
+	void push_back(T data);
+	void pop_front();
+	void clear();
+	void set_additional_link(const unsigned int index, const unsigned int second_link_index);
+
+	unsigned int getSize() { return Size; }
+	T& operator[] (const unsigned int index);
 private:
-    struct Node
-    {
-        T val;
-        int numberNode = 0;
-        std::shared_ptr<Node> next;
-        std::weak_ptr<Node> secondLink;
-        ~Node()
-        {
-            std::cout << "delete node" << std::endl;
-        }
-    };
-    std::shared_ptr<Node> head;
-    int size = 0;
+	template<typename T>
+	class Node
+	{
+	public:
+		Node* pNext;
+		Node* pSomeElement;
+		T data;
+		Node(T data = T(), Node* pNext = nullptr, Node* pSomeElement = nullptr)
+		{
+			this->data = data;
+			this->pNext = pNext;
+			this->pSomeElement = pSomeElement;
+		}
+	};
+
+	unsigned int Size;
+	Node<T> *head;
 };
+
+template<typename T>
+List<T>::List()
+{
+	Size = 0;
+	head = nullptr;
+}
+
+template<typename T>
+List<T>::~List()
+{
+	clear();
+}
+template<typename T>
+void List<T>::push_back(T data)
+{
+	if (head == nullptr)
+	{
+		head = new Node<T>(data);
+	}
+	else
+	{
+		Node<T>* current = this->head;
+
+		while (current->pNext != nullptr)
+		{
+			current = current->pNext;
+		}
+		current->pNext = new Node<T>(data);
+	}
+
+	Size++;
+}
+
+
+template<typename T>
+void List<T>::pop_front()
+{
+	if (Size > 0)
+	{
+		Node<T>* temp = head;
+
+		head = head->pNext;
+		delete temp;
+		temp = nullptr;
+		Size--;
+	}
+}
+
+template<typename T>
+void List<T>::clear()
+{
+	while (Size > 0)
+	{
+		pop_front();
+		Size--;
+	}
+}
+
+template<typename T>
+void List<T>::set_additional_link(const unsigned int index, const unsigned int second_link_index)
+{
+	Node<T>* current = this->head;
+	Node<T>* mainNode = nullptr;
+	Node<T>* linkedNode = nullptr;
+
+	int counter = 0;
+	while (counter < Size)
+	{
+		if (counter == index)
+			mainNode = current;
+		if (counter == second_link_index)
+			linkedNode = current;
+
+		current = current->pNext;
+		counter++;
+	}
+	mainNode->pSomeElement = linkedNode;
+}
+
+template<typename T>
+T& List<T>::operator[](const unsigned int index)
+{
+	Node<T>* current = this->head;
+	unsigned int counter = 0;
+
+	while (current != nullptr)
+	{
+		if (counter == index)
+		{
+			return current->data;
+		}
+		current = current->pNext;
+		counter++;
+	}
+	return current->data; // never
+}
 
 #endif // LINKED_LIST_H
