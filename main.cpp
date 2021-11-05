@@ -16,11 +16,16 @@ int main()
 		lst.push_back(rand() % 10);
 	}
 
-	lst.set_additional_link(3, 6);
+	lst.set_additional_link(0, 3);
+	lst.set_additional_link(1, 4);
+	lst.set_additional_link(2, 1);
+	lst.set_additional_link(3, 5);
+	lst.set_additional_link(4, 0);
+	lst.set_additional_link(5, 4);
 
 	for (unsigned int i = 0; i < lst.get_size(); i++)
 	{
-		std::cout << lst[i] << std::endl;
+		lst[i];
 	}
 
 	std::cout << "pop front" << std::endl;
@@ -30,7 +35,7 @@ int main()
 	{
 		std::cout << lst[i] << std::endl;
 	}
-
+	/*
 	std::cout << "clear" << std::endl;
 	lst.clear();
 
@@ -38,6 +43,6 @@ int main()
 	{
 		std::cout << lst[i] << std::endl;
 	}
-
+*/
 	return 0;
 }
