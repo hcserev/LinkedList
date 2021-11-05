@@ -8,7 +8,6 @@
 //	List<int> lst;
 //	unsigned int numbersCount = 6;
 //	//std::cin >> numbersCount;
-//	std::cout << "voila" << std::endl;
 //	for (unsigned int i = 0; i < numbersCount; i++)
 //	{
 //		lst.push_back(rand() % 10);
@@ -28,7 +27,6 @@
 //
 //	List<int> lst2(lst);
 //
-//	std::cout << "list2:" << std::endl;
 //	for (unsigned int i = 0; i < lst.get_size(); i++)
 //	{
 //		lst2[i];

@@ -34,15 +34,9 @@ private:
 		T data;
 		Node(T data = T(), std::shared_ptr<Node<T>> pNext = nullptr, std::shared_ptr<Node<T>> pSomeElement = nullptr)
 		{
-			std::cout << "node constructor " << this << std::endl;
-
 			this->data = data;
 			this->next = pNext;
 			this->p = pSomeElement;
-		}
-		~Node()
-		{
-			std::cout << "node destructor " << this << std::endl;
 		}
 	};
 
@@ -58,7 +52,6 @@ List<T>::List()
 {
 	Size = 0;
 	head = nullptr;
-	std::cout << "list constructor" << std::endl;
 }
 
 template<typename T>
@@ -78,7 +71,6 @@ template<typename T>
 List<T>::~List()
 {
 	Size=0;
-	std::cout << "list destructor" << std::endl;
 }
 template<typename T>
 void List<T>::push_back(T data)
@@ -158,7 +150,6 @@ T& List<T>::operator[](const unsigned int index)
 	{
 		if (counter == index)
 		{
-			std::cout << current << " " << current->data << " "  << std::shared_ptr<Node<T>>(current->p).get() << std::endl;
 			return current->data;
 		}
 		current = current->next;
@@ -172,7 +163,6 @@ void List<T>::copyList(const List<T>& list_)
 {
 	Size = 0;
 	head = nullptr;
-	std::cout << "list copy constructor" << std::endl;
 
 	std::map<Node<T>*, int> map_pointers;
 	std::vector<int> vec_connections;
@@ -200,7 +190,7 @@ void List<T>::copyList(const List<T>& list_)
 	}
 }
 
-
+/*
 template<typename T>
 class ICopyAlghorithm : List<T> {
 public:
@@ -242,7 +232,7 @@ public:
 		
 		return list;
 	}
-};
+};*/
 
 
 #endif // LINKED_LIST_H
