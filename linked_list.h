@@ -16,21 +16,21 @@ public:
 	void clear();
 	void set_additional_link(const unsigned int index, const unsigned int second_link_index);
 
-	unsigned int getSize() { return Size; }
+	unsigned int get_size() { return Size; }
 	T& operator[] (const unsigned int index);
 private:
 	template<typename T>
 	class Node
 	{
 	public:
-		Node* pNext;
-		Node* pSomeElement;
+		Node* next;
+		Node* p;
 		T data;
 		Node(T data = T(), Node* pNext = nullptr, Node* pSomeElement = nullptr)
 		{
 			this->data = data;
-			this->pNext = pNext;
-			this->pSomeElement = pSomeElement;
+			this->next = pNext;
+			this->p = pSomeElement;
 		}
 	};
 
@@ -61,11 +61,11 @@ void List<T>::push_back(T data)
 	{
 		Node<T>* current = this->head;
 
-		while (current->pNext != nullptr)
+		while (current->next != nullptr)
 		{
-			current = current->pNext;
+			current = current->next;
 		}
-		current->pNext = new Node<T>(data);
+		current->next = new Node<T>(data);
 	}
 
 	Size++;
@@ -79,7 +79,7 @@ void List<T>::pop_front()
 	{
 		Node<T>* temp = head;
 
-		head = head->pNext;
+		head = head->next;
 		delete temp;
 		temp = nullptr;
 		Size--;
@@ -111,10 +111,11 @@ void List<T>::set_additional_link(const unsigned int index, const unsigned int s
 		if (counter == second_link_index)
 			linkedNode = current;
 
-		current = current->pNext;
+		current = current->next;
 		counter++;
 	}
-	mainNode->pSomeElement = linkedNode;
+	if (mainNode && linkedNode)
+		mainNode->p = linkedNode;
 }
 
 template<typename T>
@@ -129,7 +130,7 @@ T& List<T>::operator[](const unsigned int index)
 		{
 			return current->data;
 		}
-		current = current->pNext;
+		current = current->next;
 		counter++;
 	}
 	return current->data; // never
