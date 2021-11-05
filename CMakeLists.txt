@@ -9,8 +9,8 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
 add_subdirectory(googletest)
 
-set(sources main.cpp linked_list.cpp)
-set(headers linked_list.h algorythms.h)
+set(sources main.cpp)
+set(headers linked_list.h )
 
 include_directories("${PROJECT_SOURCE_DIR}/headers"
  "googletest/googletest/include/")

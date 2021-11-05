@@ -5,7 +5,6 @@
 #include <iostream>
 #include <map>
 #include <vector>
-#include "algorythms.h"
 
 template<typename T>
 class List
@@ -21,7 +20,7 @@ public:
 	void clear();
 	void set_additional_link(const unsigned int index, const unsigned int second_link_index);
 
-	unsigned int get_size() { return Size; }
+	unsigned int get_size() { return size; }
 	T get_value() { return head->data; }
 	T& operator[] (const unsigned int index);
 private:
@@ -40,7 +39,7 @@ private:
 		}
 	};
 
-	unsigned int Size;
+	unsigned int size;
 	std::shared_ptr<Node<T>> head;
 
 	void copyList(const List& list_);
@@ -50,7 +49,7 @@ private:
 template<typename T>
 List<T>::List()
 {
-	Size = 0;
+	size = 0;
 	head = nullptr;
 }
 
@@ -70,7 +69,7 @@ List<T>& List<T>::operator=(const List<T>& list_)
 template<typename T>
 List<T>::~List()
 {
-	Size=0;
+	size=0;
 }
 template<typename T>
 void List<T>::push_back(T data)
@@ -90,31 +89,31 @@ void List<T>::push_back(T data)
 		current->next = std::make_shared<Node<T>>(data);
 	}
 
-	Size++;
+	size++;
 }
 
 
 template<typename T>
 void List<T>::pop_front()
 {
-	if (Size > 0)
+	if (size > 0)
 	{
 		std::shared_ptr<Node<T>> temp = head;
 
 		head = head->next;
 		temp.reset();
 		temp = nullptr;
-		Size--;
+		size--;
 	}
 }
 
 template<typename T>
 void List<T>::clear()
 {
-	while (Size > 0)
+	while (size > 0)
 	{
 		pop_front();
-		Size--;
+		size--;
 	}
 }
 
@@ -126,7 +125,7 @@ void List<T>::set_additional_link(const unsigned int index, const unsigned int s
 	std::shared_ptr<Node<T>> linkedNode = nullptr;
 
 	unsigned int counter = 0;
-	while (counter < Size)
+	while (counter < size)
 	{
 		if (counter == index)
 			mainNode = current;
@@ -161,7 +160,7 @@ T& List<T>::operator[](const unsigned int index)
 template<typename T>
 void List<T>::copyList(const List<T>& list_)
 {
-	Size = 0;
+	size = 0;
 	head = nullptr;
 
 	std::map<Node<T>*, int> map_pointers;
@@ -184,55 +183,10 @@ void List<T>::copyList(const List<T>& list_)
 		old_list = old_list->next;
 	}
 
-	for (unsigned int i = 0; i < Size; i++)
+	for (unsigned int i = 0; i < size; i++)
 	{
 		set_additional_link(i, vec_connections[i]);
 	}
 }
-
-/*
-template<typename T>
-class ICopyAlghorithm : List<T> {
-public:
-	virtual List<T> copy(const List<T>& list_) = 0;
-	virtual ~ICopyAlghorithm() = default;
-};
-
-template<typename T>
-class CopyUsingVectors : ICopyAlghorithm<T> {
-public:
-	virtual List<T> copy(const List<T>& list_) override {
-		List<T> list;
-
-		std::map<Node<T>*, int> map_pointers;
-		std::vector<int> vec_connections;
-
-		std::shared_ptr<Node<T>> old_list = list_.head;
-
-		int counter = 0;
-		while (old_list != nullptr)
-		{
-			map_pointers[std::shared_ptr<Node<T>>(old_list).get()] = counter++;
-			list.push_back(old_list->data);
-			old_list = old_list->next;
-		}
-
-		old_list = list_.head;
-		while (old_list != nullptr)
-		{
-			vec_connections.push_back(map_pointers[std::shared_ptr<Node<T>>(old_list->p).get()]);
-			old_list = old_list->next;
-		}
-
-		for (unsigned int i = 0; i < Size; i++)
-		{
-			list.set_additional_link(i, vec_connections[i]);
-		}
-
-		
-		return list;
-	}
-};*/
-
 
 #endif // LINKED_LIST_H
